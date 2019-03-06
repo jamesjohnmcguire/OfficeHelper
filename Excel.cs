@@ -125,6 +125,12 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			excelApplication.DisplayAlerts = false;
 		}
 
+		public ExcelWrapper(string fileName)
+			: this()
+		{
+			this.filename = fileName;
+		}
+
 		public void Close()
 		{
 			CloseFile();
