@@ -637,8 +637,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		{
 			string[][] stringArray = null;
 
-			Array array = rangeValues as Array;
-			if (null != array)
+			if (rangeValues is Array array)
 			{
 				int rank = array.Rank;
 				if (rank > 1)
