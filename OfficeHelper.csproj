@@ -6,7 +6,7 @@
     <OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
     <AssemblyTitle>OfficeHelper</AssemblyTitle>
     <Product>OfficeHelper</Product>
-    <Copyright>Copyright ©  2018</Copyright>
+    <Copyright>Copyright ©  2019</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
