@@ -9,14 +9,14 @@
 // Namespace includes
 /////////////////////////////////////////////////////////////////////////////
 using Common.Logging;
-using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 using System;
-using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
+using Microsoft.Office.Interop.Excel;
 
 namespace DigitalZenWorks.Common.OfficeHelper
 {
@@ -177,8 +177,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			workBook = excelApplication.Workbooks.Add();
 			workSheets = workBook.Worksheets;
 
-			workSheet = workSheets[1];
-
+			workSheet = (Worksheet)workSheets[1];
 			workSheet.Name = sheetName;
 
 			return workBook;
@@ -236,7 +235,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 				column++;
 			}
 
-			Range range = workSheet.Cells[row, column];
+			Range range = (Range)workSheet.Cells[row, column];
 
 			return range;
 		}
@@ -245,7 +244,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		{
 			Range range = GetCell(row, column);
 
-			double color = range.Interior.Color;
+			double color = (double)range.Interior.Color;
 
 			return color;
 		}
@@ -254,7 +253,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		{
 			Range range = GetCell(row, column);
 
-			int color = range.Interior.ColorIndex;
+			int color = (int)range.Interior.ColorIndex;
 
 			return color;
 		}
@@ -263,7 +262,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		{
 			Range range = GetCell(row, column);
 
-			double color = range.Font.Color;
+			double color = (double)range.Font.Color;
 
 			return color;
 		}
@@ -272,7 +271,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		{
 			Range range = GetCell(row, column);
 
-			int color = range.Font.ColorIndex;
+			int color = (int)range.Font.ColorIndex;
 
 			return color;
 		}
@@ -467,7 +466,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 					if (workBook != null)
 					{
 						workSheets = workBook.Worksheets;
-						workSheet = workSheets[1];
+						workSheet = (Worksheet)workSheets[1];
 					}
 
 					result = true;
