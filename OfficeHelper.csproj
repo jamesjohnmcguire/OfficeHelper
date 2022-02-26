@@ -6,7 +6,6 @@
 		<CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Copyright>Copyright © 2019 - 2022</Copyright>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
-		<Platforms>x86;x64</Platforms>
 		<RootNamespace>DigitalZenWorks.Common.OfficeHelper</RootNamespace>
 		<SignAssembly>true</SignAssembly>
 		<TargetFramework>net48</TargetFramework>
