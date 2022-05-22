@@ -36,13 +36,12 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		private string filename = string.Empty;
 		private bool hasHeaderRow = false;
 
-		private static readonly ILog log = LogManager.GetLogger
-			(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		private static readonly ILog log = LogManager.GetLogger(
+			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private Workbook workBook = null;
 		private Worksheet workSheet = null;
 		private Sheets workSheets = null;
-		//private string version = string.Empty;
 
 		public int ColumnCount
 		{
@@ -118,7 +117,6 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		public ExcelWrapper()
 		{
 			excelApplication = new Microsoft.Office.Interop.Excel.Application();
-			//version = excelApplication.Version;
 
 			excelApplication.DisplayAlerts = false;
 		}
@@ -140,7 +138,8 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Microsoft.Design",
 			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public void CloseFile()
 		{
@@ -151,11 +150,13 @@ namespace DigitalZenWorks.Common.OfficeHelper
 					Marshal.ReleaseComObject(workSheet);
 					workSheet = null;
 				}
+
 				if (workSheets != null)
 				{
 					Marshal.ReleaseComObject(workSheets);
 					workSheets = null;
 				}
+
 				if (workBook != null)
 				{
 					workBook.Close(false, null, false);
@@ -165,7 +166,8 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			}
 			catch (Exception exception)
 			{
-				log.Error(CultureInfo.InvariantCulture,
+				log.Error(
+					CultureInfo.InvariantCulture,
 					m => m("Initialization Error: {0}", exception));
 			}
 		}
@@ -181,8 +183,8 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			return workBook;
 		}
 
-		public void Delete(int row, int column,
-			XlDeleteShiftDirection direction)
+		public void Delete(
+			int row, int column, XlDeleteShiftDirection direction)
 		{
 			Range range = GetCell(row, column);
 
@@ -321,8 +323,11 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		/// <param name="fileName">file name</param>
 		/// <param name="sheetName">Worksheet name</param>
 		/// <returns>DataTable Data</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-		public static System.Data.DataTable GetEntireSheet(string fileName,
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Microsoft.Security",
+			"CA2100:Review SQL queries for security vulnerabilities")]
+		public static System.Data.DataTable GetEntireSheet(
+			string fileName,
 			string sheetName)
 		{
 			System.Data.DataTable excelTable = null;
@@ -336,8 +341,10 @@ namespace DigitalZenWorks.Common.OfficeHelper
 				using (OleDbConnection connection =
 					new OleDbConnection(connectionString))
 				{
-					string query = string.Format(CultureInfo.InvariantCulture,
-						"SELECT * FROM [{0}$]", sheetName);
+					string query = string.Format(
+						CultureInfo.InvariantCulture,
+						"SELECT * FROM [{0}$]",
+						sheetName);
 
 					using (OleDbDataAdapter adaptor =
 						new OleDbDataAdapter(query, connection))
@@ -372,8 +379,8 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			return columnName;
 		}
 
-		public Range GetRange(int rowBegin, int rowEnd, int columnBegin,
-			int columnEnd)
+		public Range GetRange(
+			int rowBegin, int rowEnd, int columnBegin, int columnEnd)
 		{
 			// excel is 1 based
 			rowBegin = AdjustRow(rowBegin);
@@ -394,8 +401,8 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			return range;
 		}
 
-		public string[][] GetRangeValues(int rowBegin, int rowEnd,
-			int columnBegin, int columnEnd)
+		public string[][] GetRangeValues(
+			int rowBegin, int rowEnd, int columnBegin, int columnEnd)
 		{
 			Range range = GetRange(rowBegin, rowEnd, columnBegin, columnEnd);
 
@@ -442,7 +449,8 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			return OpenFile(filename);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Microsoft.Design",
 			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public bool OpenFile(string fileName)
 		{
@@ -454,12 +462,22 @@ namespace DigitalZenWorks.Common.OfficeHelper
 					(File.Exists(fileName)))
 				{
 					filename = fileName;
-					workBook = excelApplication.Workbooks.Open(fileName, 0,
-						false, 1, true, System.Reflection.Missing.Value,
-						System.Reflection.Missing.Value, true,
-						System.Reflection.Missing.Value, true,
-						System.Reflection.Missing.Value, false,
-						System.Reflection.Missing.Value, false, false);
+					workBook = excelApplication.Workbooks.Open(
+						fileName,
+						0,
+						false,
+						1,
+						true,
+						System.Reflection.Missing.Value,
+						System.Reflection.Missing.Value,
+						true,
+						System.Reflection.Missing.Value,
+						true,
+						System.Reflection.Missing.Value,
+						false,
+						System.Reflection.Missing.Value,
+						false,
+						false);
 
 					if (workBook != null)
 					{
@@ -473,21 +491,29 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			catch (Exception exception)
 			{
 				this.CloseFile();
-				log.Error(CultureInfo.InvariantCulture,
+				log.Error(
+					CultureInfo.InvariantCulture,
 					m => m("Initialization Error: {0}", exception));
 			}
 
 			return result;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Microsoft.Design",
 			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public void Save()
 		{
 			try
 			{
-				workBook.SaveAs(filename, XlFileFormat.xlWorkbookDefault,
-					null, null, false, false, XlSaveAsAccessMode.xlExclusive,
+				workBook.SaveAs(
+					filename,
+					XlFileFormat.xlWorkbookDefault,
+					null,
+					null,
+					false,
+					false,
+					XlSaveAsAccessMode.xlExclusive,
 					XlSaveAsAccessMode.xlExclusive,
 					System.Reflection.Missing.Value,
 					System.Reflection.Missing.Value,
@@ -497,27 +523,38 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			catch (Exception exception)
 			{
 				this.CloseFile();
-				log.Error(CultureInfo.InvariantCulture,
+				log.Error(
+					CultureInfo.InvariantCulture,
 					m => m("Initialization Error: {0}", exception));
 			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design",
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Microsoft.Design",
 			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public void SaveAsCsv(string filePath)
 		{
 			try
 			{
-				workBook.SaveAs(filePath, XlFileFormat.xlCSVWindows,
-					Type.Missing, Type.Missing, Type.Missing, Type.Missing,
+				workBook.SaveAs(
+					filePath,
+					XlFileFormat.xlCSVWindows,
+					Type.Missing,
+					Type.Missing,
+					Type.Missing,
+					Type.Missing,
 					XlSaveAsAccessMode.xlNoChange,
-					XlSaveConflictResolution.xlLocalSessionChanges, false,
-					Type.Missing, Type.Missing, true);
+					XlSaveConflictResolution.xlLocalSessionChanges,
+					false,
+					Type.Missing,
+					Type.Missing,
+					true);
 			}
 			catch (Exception exception)
 			{
 				this.CloseFile();
-				log.Error(CultureInfo.InvariantCulture,
+				log.Error(
+					CultureInfo.InvariantCulture,
 					m => m("Initialization Error: {0}", exception));
 			}
 		}
@@ -544,19 +581,13 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			switch (format)
 			{
 				case Format.Date:
-				{
 					columnRange.NumberFormat = "yyyy-MM-dd";
 					break;
-				}
 				case Format.Text:
-				{
 					columnRange.NumberFormat = "@";
 					break;
-				}
 				default:
-				{
 					break;
-				}
 			}
 
 			Marshal.ReleaseComObject(columnRange);
