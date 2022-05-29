@@ -1,13 +1,10 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// Copyright © 2006 - 2022 by James John McGuire
-// All rights reserved.
+// <copyright file="Excel.cs" company="James John McGuire">
+// Copyright © 2006 - 2022 James John McGuire. All Rights Reserved.
+// </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////////////////////////////////////////////
-// Namespace includes
-/////////////////////////////////////////////////////////////////////////////
 using Common.Logging;
-using Excel = Microsoft.Office.Interop.Excel;
 using System;
 using System.Data.OleDb;
 using System.Drawing;
@@ -15,6 +12,8 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
+
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DigitalZenWorks.Common.OfficeHelper
 {
@@ -28,6 +27,9 @@ namespace DigitalZenWorks.Common.OfficeHelper
 	// Represents a Excel object.
 	public class ExcelWrapper
 	{
+		private static readonly ILog Log = LogManager.GetLogger(
+			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
 		private int columnCount = 0;
 
 		private Microsoft.Office.Interop.Excel.Application excelApplication =
@@ -36,12 +38,22 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		private string filename = string.Empty;
 		private bool hasHeaderRow = false;
 
-		private static readonly ILog log = LogManager.GetLogger(
-			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 		private Workbook workBook = null;
 		private Worksheet workSheet = null;
 		private Sheets workSheets = null;
+
+		public ExcelWrapper()
+		{
+			excelApplication = new Microsoft.Office.Interop.Excel.Application();
+
+			excelApplication.DisplayAlerts = false;
+		}
+
+		public ExcelWrapper(string fileName)
+			: this()
+		{
+			this.filename = fileName;
+		}
 
 		public int ColumnCount
 		{
@@ -114,17 +126,67 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			}
 		}
 
-		public ExcelWrapper()
+		/// <summary>
+		/// Retrieve data from the Excel spreadsheet.
+		/// </summary>
+		/// <param name="fileName">file name.</param>
+		/// <param name="sheetName">Worksheet name.</param>
+		/// <returns>DataTable Data.</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Microsoft.Security",
+			"CA2100:Review SQL queries for security vulnerabilities",
+			Justification = "For internal use")]
+		public static System.Data.DataTable GetEntireSheet(
+			string fileName,
+			string sheetName)
 		{
-			excelApplication = new Microsoft.Office.Interop.Excel.Application();
+			System.Data.DataTable excelTable = null;
 
-			excelApplication.DisplayAlerts = false;
+			try
+			{
+				string connectionString = GetConnectionString(fileName);
+				excelTable = new System.Data.DataTable();
+				excelTable.Locale = CultureInfo.InvariantCulture;
+
+				using (OleDbConnection connection =
+					new OleDbConnection(connectionString))
+				{
+					string query = string.Format(
+						CultureInfo.InvariantCulture,
+						"SELECT * FROM [{0}$]",
+						sheetName);
+
+					using (OleDbDataAdapter adaptor =
+						new OleDbDataAdapter(query, connection))
+					{
+						adaptor.Fill(excelTable);
+					}
+				}
+			}
+			catch
+			{
+				excelTable.Dispose();
+				throw;
+			}
+
+			return excelTable;
 		}
 
-		public ExcelWrapper(string fileName)
-			: this()
+		public static string GetExcelColumnName(int columnNumber)
 		{
-			this.filename = fileName;
+			int dividend = columnNumber;
+			string columnName = string.Empty;
+			int modulo;
+
+			while (dividend > 0)
+			{
+				modulo = (dividend - 1) % 26;
+				columnName =
+					Convert.ToChar(65 + modulo).ToString() + columnName;
+				dividend = (int)((dividend - modulo) / 26);
+			}
+
+			return columnName;
 		}
 
 		public void Close()
@@ -143,32 +205,23 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public void CloseFile()
 		{
-			try
+			if (workSheet != null)
 			{
-				if (workSheet != null)
-				{
-					Marshal.ReleaseComObject(workSheet);
-					workSheet = null;
-				}
-
-				if (workSheets != null)
-				{
-					Marshal.ReleaseComObject(workSheets);
-					workSheets = null;
-				}
-
-				if (workBook != null)
-				{
-					workBook.Close(false, null, false);
-					Marshal.ReleaseComObject(workBook);
-					workBook = null;
-				}
+				Marshal.ReleaseComObject(workSheet);
+				workSheet = null;
 			}
-			catch (Exception exception)
+
+			if (workSheets != null)
 			{
-				log.Error(
-					CultureInfo.InvariantCulture,
-					m => m("Initialization Error: {0}", exception));
+				Marshal.ReleaseComObject(workSheets);
+				workSheets = null;
+			}
+
+			if (workBook != null)
+			{
+				workBook.Close(false, null, false);
+				Marshal.ReleaseComObject(workBook);
+				workBook = null;
 			}
 		}
 
@@ -210,12 +263,13 @@ namespace DigitalZenWorks.Common.OfficeHelper
 				// is available. If found return true;
 				for (int index = 1; index <= workSheets.Count; index++)
 				{
-					Worksheet testSheet = (Worksheet)workSheets.get_Item((object)index);
+					Worksheet testSheet =
+						(Worksheet)workSheets.get_Item((object)index);
 					if (testSheet.Name.Equals(worksheetName))
 					{
 						// Get method interface
-						_Worksheet _sheet = (_Worksheet)testSheet;
-						_sheet.Activate();
+						_Worksheet sheet = (_Worksheet)testSheet;
+						sheet.Activate();
 						workSheet = testSheet;
 						sheetFound = true;
 						break;
@@ -317,68 +371,6 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			return values;
 		}
 
-		/// <summary>
-		/// Retrieve data from the Excel spreadsheet.
-		/// </summary>
-		/// <param name="fileName">file name</param>
-		/// <param name="sheetName">Worksheet name</param>
-		/// <returns>DataTable Data</returns>
-		[System.Diagnostics.CodeAnalysis.SuppressMessage(
-			"Microsoft.Security",
-			"CA2100:Review SQL queries for security vulnerabilities")]
-		public static System.Data.DataTable GetEntireSheet(
-			string fileName,
-			string sheetName)
-		{
-			System.Data.DataTable excelTable = null;
-
-			try
-			{
-				string connectionString = GetConnectionString(fileName);
-				excelTable = new System.Data.DataTable();
-				excelTable.Locale = CultureInfo.InvariantCulture;
-
-				using (OleDbConnection connection =
-					new OleDbConnection(connectionString))
-				{
-					string query = string.Format(
-						CultureInfo.InvariantCulture,
-						"SELECT * FROM [{0}$]",
-						sheetName);
-
-					using (OleDbDataAdapter adaptor =
-						new OleDbDataAdapter(query, connection))
-					{
-						adaptor.Fill(excelTable);
-					}
-				}
-			}
-			catch
-			{
-				excelTable.Dispose();
-				throw;
-			}
-
-			return excelTable;
-		}
-
-		public static string GetExcelColumnName(int columnNumber)
-		{
-			int dividend = columnNumber;
-			string columnName = String.Empty;
-			int modulo;
-
-			while (dividend > 0)
-			{
-				modulo = (dividend - 1) % 26;
-				columnName =
-					Convert.ToChar(65 + modulo).ToString() + columnName;
-				dividend = (int)((dividend - modulo) / 26);
-			}
-
-			return columnName;
-		}
-
 		public Range GetRange(
 			int rowBegin, int rowEnd, int columnBegin, int columnEnd)
 		{
@@ -449,114 +441,75 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			return OpenFile(filename);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage(
-			"Microsoft.Design",
-			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public bool OpenFile(string fileName)
 		{
 			bool result = false;
 
-			try
+			if ((!string.IsNullOrEmpty(fileName)) &&
+				File.Exists(fileName))
 			{
-				if ((!string.IsNullOrEmpty(fileName)) &&
-					(File.Exists(fileName)))
+				filename = fileName;
+				workBook = excelApplication.Workbooks.Open(
+					fileName,
+					0,
+					false,
+					1,
+					true,
+					System.Reflection.Missing.Value,
+					System.Reflection.Missing.Value,
+					true,
+					System.Reflection.Missing.Value,
+					true,
+					System.Reflection.Missing.Value,
+					false,
+					System.Reflection.Missing.Value,
+					false,
+					false);
+
+				if (workBook != null)
 				{
-					filename = fileName;
-					workBook = excelApplication.Workbooks.Open(
-						fileName,
-						0,
-						false,
-						1,
-						true,
-						System.Reflection.Missing.Value,
-						System.Reflection.Missing.Value,
-						true,
-						System.Reflection.Missing.Value,
-						true,
-						System.Reflection.Missing.Value,
-						false,
-						System.Reflection.Missing.Value,
-						false,
-						false);
-
-					if (workBook != null)
-					{
-						workSheets = workBook.Worksheets;
-						workSheet = (Worksheet)workSheets[1];
-					}
-
-					result = true;
+					workSheets = workBook.Worksheets;
+					workSheet = (Worksheet)workSheets[1];
 				}
-			}
-			catch (Exception exception)
-			{
-				this.CloseFile();
-				log.Error(
-					CultureInfo.InvariantCulture,
-					m => m("Initialization Error: {0}", exception));
+
+				result = true;
 			}
 
 			return result;
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage(
-			"Microsoft.Design",
-			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public void Save()
 		{
-			try
-			{
-				workBook.SaveAs(
-					filename,
-					XlFileFormat.xlWorkbookDefault,
-					null,
-					null,
-					false,
-					false,
-					XlSaveAsAccessMode.xlExclusive,
-					XlSaveAsAccessMode.xlExclusive,
-					System.Reflection.Missing.Value,
-					System.Reflection.Missing.Value,
-					System.Reflection.Missing.Value,
-					System.Reflection.Missing.Value);
-			}
-			catch (Exception exception)
-			{
-				this.CloseFile();
-				log.Error(
-					CultureInfo.InvariantCulture,
-					m => m("Initialization Error: {0}", exception));
-			}
+			workBook.SaveAs(
+				filename,
+				XlFileFormat.xlWorkbookDefault,
+				null,
+				null,
+				false,
+				false,
+				XlSaveAsAccessMode.xlExclusive,
+				XlSaveAsAccessMode.xlExclusive,
+				System.Reflection.Missing.Value,
+				System.Reflection.Missing.Value,
+				System.Reflection.Missing.Value,
+				System.Reflection.Missing.Value);
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage(
-			"Microsoft.Design",
-			"CA1031:DoNotCatchGeneralExceptionTypes")]
 		public void SaveAsCsv(string filePath)
 		{
-			try
-			{
-				workBook.SaveAs(
-					filePath,
-					XlFileFormat.xlCSVWindows,
-					Type.Missing,
-					Type.Missing,
-					Type.Missing,
-					Type.Missing,
-					XlSaveAsAccessMode.xlNoChange,
-					XlSaveConflictResolution.xlLocalSessionChanges,
-					false,
-					Type.Missing,
-					Type.Missing,
-					true);
-			}
-			catch (Exception exception)
-			{
-				this.CloseFile();
-				log.Error(
-					CultureInfo.InvariantCulture,
-					m => m("Initialization Error: {0}", exception));
-			}
+			workBook.SaveAs(
+				filePath,
+				XlFileFormat.xlCSVWindows,
+				Type.Missing,
+				Type.Missing,
+				Type.Missing,
+				Type.Missing,
+				XlSaveAsAccessMode.xlNoChange,
+				XlSaveConflictResolution.xlLocalSessionChanges,
+				false,
+				Type.Missing,
+				Type.Missing,
+				true);
 		}
 
 		public void SetBackgroundColor(int row, int column, double color)
@@ -634,24 +587,6 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			workSheet.Name = sheetName;
 		}
 
-		/// <summary>
-		/// Excel uses a 1 based index. Programs using this, use a 0 based
-		/// index, so need to adjust.  Also, compensate, if there is a header.
-		/// </summary>
-		/// <param name="row"></param>
-		/// <returns></returns>
-		private int AdjustRow(int row)
-		{
-			row++;
-
-			if (true == hasHeaderRow)
-			{
-				row++;
-			}
-
-			return row;
-		}
-
 		private static string GetConnectionString(string fileName)
 		{
 			string connectionString =
@@ -661,7 +596,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			return connectionString;
 		}
 
-		private static string[][] GetStringArray(Object rangeValues)
+		private static string[][] GetStringArray(object rangeValues)
 		{
 			string[][] stringArray = null;
 
@@ -681,7 +616,8 @@ namespace DigitalZenWorks.Common.OfficeHelper
 
 						for (int index2 = 0; index2 < columnCount; index2++)
 						{
-							Object obj = array.GetValue(index + 1, index2 + 1);
+							object obj = array.GetValue(index + 1, index2 + 1);
+
 							if (null != obj)
 							{
 								string value = obj.ToString();
@@ -700,6 +636,24 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			}
 
 			return stringArray;
+		}
+
+		/// <summary>
+		/// Excel uses a 1 based index. Programs using this, use a 0 based
+		/// index, so need to adjust.  Also, compensate, if there is a header.
+		/// </summary>
+		/// <param name="row"></param>
+		/// <returns>The adjusted row index.</returns>
+		private int AdjustRow(int row)
+		{
+			row++;
+
+			if (true == hasHeaderRow)
+			{
+				row++;
+			}
+
+			return row;
 		}
 	}
 }
