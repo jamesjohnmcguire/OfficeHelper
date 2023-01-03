@@ -5,7 +5,7 @@
 		<AssemblyOriginatorKeyFile>OfficeHelper.snk</AssemblyOriginatorKeyFile>
 		<AssemblyTitle>OfficeHelper</AssemblyTitle>
 		<CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-		<Copyright>Copyright © 2019 - 2022</Copyright>
+		<Copyright>Copyright © 2019 - 2023</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
 		<RootNamespace>DigitalZenWorks.Common.OfficeHelper</RootNamespace>
