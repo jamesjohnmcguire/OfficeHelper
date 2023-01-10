@@ -4,7 +4,7 @@
 		<AssemblyName>DigitalZenWorks.Common.OfficeHelper</AssemblyName>
 		<AssemblyOriginatorKeyFile>OfficeHelper.snk</AssemblyOriginatorKeyFile>
 		<AssemblyTitle>OfficeHelper</AssemblyTitle>
-		<CodeAnalysisRuleSet>$(SolutionDir)\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+		<CodeAnalysisRuleSet>CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Copyright>Copyright © 2019 - 2023</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<OutputPath>$(SolutionDir)\Bin\$(Configuration)\$(Platform)</OutputPath>
@@ -38,7 +38,7 @@
 
 	<ItemGroup>
 		<AdditionalFiles Include="stylecop.json" />
-		<CodeAnalysisDictionary Include="$(SolutionDir)\CodeAnalysis.ruleset" />
+		<CodeAnalysisDictionary Include="CodeAnalysis.ruleset" />
 	</ItemGroup>
 
 </Project>
