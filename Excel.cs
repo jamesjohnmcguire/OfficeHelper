@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
 
 using Excel = Microsoft.Office.Interop.Excel;
+using Range = Microsoft.Office.Interop.Excel.Range;
 
 namespace DigitalZenWorks.Common.OfficeHelper
 {
