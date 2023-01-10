@@ -33,15 +33,14 @@ namespace DigitalZenWorks.Common.OfficeHelper
 
 		private int columnCount = 0;
 
-		private Microsoft.Office.Interop.Excel.Application excelApplication =
-			null;
+		private Microsoft.Office.Interop.Excel.Application excelApplication;
 
 		private string filename = string.Empty;
-		private bool hasHeaderRow = false;
+		private bool hasHeaderRow;
 
-		private Workbook workBook = null;
-		private Worksheet workSheet = null;
-		private Sheets workSheets = null;
+		private Workbook workBook;
+		private Worksheet workSheet;
+		private Sheets workSheets;
 
 		public ExcelWrapper()
 		{
