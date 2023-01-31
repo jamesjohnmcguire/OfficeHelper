@@ -1,5 +1,5 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
-// <copyright file="Excel.cs" company="James John McGuire">
+// <copyright file="ExcelWrapper.cs" company="James John McGuire">
 // Copyright © 2006 - 2023 James John McGuire. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
@@ -18,13 +18,6 @@ using Range = Microsoft.Office.Interop.Excel.Range;
 
 namespace DigitalZenWorks.Common.OfficeHelper
 {
-	public enum Format
-	{
-		Date,
-		General,
-		Text
-	}
-
 	// Represents a Excel object.
 	public class ExcelWrapper
 	{
