@@ -1,4 +1,10 @@
-﻿using System.Reflection;
+﻿/////////////////////////////////////////////////////////////////////////////
+// <copyright file="AssemblyInfo.cs" company="James John McGuire">
+// Copyright © 2006 - 2023 James John McGuire. All Rights Reserved.
+// </copyright>
+/////////////////////////////////////////////////////////////////////////////
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
