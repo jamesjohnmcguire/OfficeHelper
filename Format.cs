@@ -6,6 +6,9 @@
 
 namespace DigitalZenWorks.Common.OfficeHelper
 {
+	/// <summary>
+	/// The Format enum.
+	/// </summary>
 	public enum Format
 	{
 		/// <summary>
