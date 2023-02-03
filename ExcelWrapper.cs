@@ -176,14 +176,14 @@ namespace DigitalZenWorks.Common.OfficeHelper
 				excelTable = new System.Data.DataTable();
 				excelTable.Locale = CultureInfo.InvariantCulture;
 
-				OleDbConnection connection = new (connectionString);
+				using OleDbConnection connection = new (connectionString);
 
 				string query = string.Format(
 					CultureInfo.InvariantCulture,
 					"SELECT * FROM [{0}$]",
 					sheetName);
 
-				OleDbDataAdapter adaptor = new (query, connection);
+				using OleDbDataAdapter adaptor = new (query, connection);
 
 				adaptor.Fill(excelTable);
 			}
