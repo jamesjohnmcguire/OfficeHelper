@@ -224,6 +224,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		public void Close()
 		{
 			CloseFile();
+
 			if (excelApplication != null)
 			{
 				excelApplication.Quit();
@@ -585,8 +586,10 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		/// The open file method.
 		/// </summary>
 		/// <param name="fileName">The file name to open.</param>
+		/// <param name="readOnly">Indicates whether the file should be
+		/// opened in read only mode or not.</param>
 		/// <returns>A value indicating success or not.</returns>
-		public bool OpenFile(string fileName)
+		public bool OpenFile(string fileName, bool readOnly = false)
 		{
 			bool result = false;
 
@@ -597,7 +600,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 				workBook = excelApplication.Workbooks.Open(
 					fileName,
 					0,
-					false,
+					readOnly,
 					1,
 					true,
 					System.Reflection.Missing.Value,
