@@ -231,6 +231,9 @@ namespace DigitalZenWorks.Common.OfficeHelper
 				Marshal.ReleaseComObject(excelApplication);
 				excelApplication = null;
 			}
+
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
 		}
 
 		/// <summary>
