@@ -5,7 +5,7 @@
 		<AssemblyOriginatorKeyFile>OfficeHelper.snk</AssemblyOriginatorKeyFile>
 		<AssemblyTitle>OfficeHelper</AssemblyTitle>
 		<CodeAnalysisRuleSet>CodeAnalysis.ruleset</CodeAnalysisRuleSet>
-		<Copyright>Copyright © 2019 - 2023</Copyright>
+		<Copyright>Copyright © 2019 - 2024</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<LangVersion>latest</LangVersion>
