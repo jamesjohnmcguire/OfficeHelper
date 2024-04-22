@@ -15,6 +15,7 @@ using Microsoft.Office.Interop.Excel;
 
 using Excel = Microsoft.Office.Interop.Excel;
 using Range = Microsoft.Office.Interop.Excel.Range;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DigitalZenWorks.Common.OfficeHelper
 {
@@ -385,6 +386,27 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			int color = (int)range.Interior.ColorIndex;
 
 			return color;
+		}
+
+		/// <summary>
+		/// Get cell value.
+		/// </summary>
+		/// <param name="row">The row to use.</param>
+		/// <param name="column">The column to use.</param>
+		/// <returns>The cell value.</returns>
+		public string GetCellDateValue(int row, int column)
+		{
+			string cellValue = null;
+			Range cell = GetCell(row, column);
+
+			if (null != cell.Value2)
+			{
+				DateTime dateTime = DateTime.FromOADate(cell.Value2);
+				cellValue = dateTime.ToString(
+					"yyyy-MM-dd", CultureInfo.InvariantCulture);
+			}
+
+			return cellValue;
 		}
 
 		/// <summary>
