@@ -15,7 +15,6 @@ using Microsoft.Office.Interop.Excel;
 
 using Excel = Microsoft.Office.Interop.Excel;
 using Range = Microsoft.Office.Interop.Excel.Range;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DigitalZenWorks.Common.OfficeHelper
 {
@@ -45,9 +44,10 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		/// </summary>
 		public ExcelWrapper()
 		{
-			excelApplication = new Microsoft.Office.Interop.Excel.Application();
-
-			excelApplication.DisplayAlerts = false;
+			excelApplication = new ()
+			{
+				DisplayAlerts = false
+			};
 		}
 
 		/// <summary>
@@ -174,7 +174,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			try
 			{
 				string connectionString = GetConnectionString(fileName);
-				excelTable = new System.Data.DataTable();
+				excelTable = new ();
 				excelTable.Locale = CultureInfo.InvariantCulture;
 
 				using OleDbConnection connection = new (connectionString);
