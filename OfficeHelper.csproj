@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
 		<AssemblyName>DigitalZenWorks.Common.OfficeHelper</AssemblyName>
@@ -18,7 +18,7 @@
 		<TargetFramework>net8.0-windows</TargetFramework>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
-		<TargetFrameworks>netstandard2.0;net462;net6.0-windows;net7.0-windows</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net462;net6.0-windows;net7.0-windows;net8.0-windows</TargetFrameworks>
 	</PropertyGroup>
 
 	<ItemGroup>
