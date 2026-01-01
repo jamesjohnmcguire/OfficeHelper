@@ -4,7 +4,7 @@
 		<AssemblyName>DigitalZenWorks.Common.OfficeHelper</AssemblyName>
 		<AssemblyOriginatorKeyFile>OfficeHelper.snk</AssemblyOriginatorKeyFile>
 		<AssemblyTitle>OfficeHelper</AssemblyTitle>
-		<Copyright>Copyright © 2019 - 2025</Copyright>
+		<Copyright>Copyright © 2019 - 2026</Copyright>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<LangVersion>latest</LangVersion>
