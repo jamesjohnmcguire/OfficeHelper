@@ -15,10 +15,12 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		/// Date format.
 		/// </summary>
 		Date,
+
 		/// <summary>
 		/// General format.
 		/// </summary>
 		General,
+
 		/// <summary>
 		/// Text format.
 		/// </summary>

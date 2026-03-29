@@ -4,20 +4,19 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using System;
-using System.Data.OleDb;
-using System.Drawing;
-using System.Globalization;
-using System.IO;
-using System.Runtime.InteropServices;
-using Microsoft.Office.Interop.Excel;
-
-using Excel = Microsoft.Office.Interop.Excel;
-using Range = Microsoft.Office.Interop.Excel.Range;
-
 namespace DigitalZenWorks.Common.OfficeHelper
 {
+	using System;
+	using System.Data.OleDb;
+	using System.Drawing;
+	using System.Globalization;
+	using System.IO;
+	using System.Runtime.InteropServices;
+	using Common.Logging;
+	using Microsoft.Office.Interop.Excel;
+	using Excel = Microsoft.Office.Interop.Excel;
+	using Range = Microsoft.Office.Interop.Excel.Range;
+
 	/// <summary>
 	/// Represents a Excel object.
 	/// </summary>
@@ -118,7 +117,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			{
 				int lastUsedColumn = -1;
 
-				if (null != workSheet)
+				if (workSheet != null)
 				{
 					Range last = workSheet.Cells.SpecialCells(
 						XlCellType.xlCellTypeLastCell, Type.Missing);
@@ -140,7 +139,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			{
 				int lastUsedRow = -1;
 
-				if (null != workSheet)
+				if (workSheet != null)
 				{
 					Range last = workSheet.Cells.SpecialCells(
 						XlCellType.xlCellTypeLastCell, Type.Missing);
@@ -399,7 +398,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			string cellValue = null;
 			Range cell = GetCell(row, column);
 
-			if (null != cell.Value2)
+			if (cell.Value2 != null)
 			{
 				DateTime dateTime = DateTime.FromOADate(cell.Value2);
 				cellValue = dateTime.ToString(
@@ -450,7 +449,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			string cellValue = null;
 			Range cell = GetCell(row, column);
 
-			if (null != cell.Value2)
+			if (cell.Value2 != null)
 			{
 				cellValue = cell.Value2.ToString();
 			}
@@ -492,7 +491,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		{
 			string[][] values = null;
 
-			if (null != workSheet)
+			if (workSheet != null)
 			{
 				values = GetRangeValues(0, LastRowUsed, 0, LastColumnUsed);
 			}
@@ -778,7 +777,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		/// <param name="data">The data array to set to.</param>
 		public void SetRow(int row, string[] data)
 		{
-			if ((null != data) && (data.Length > 0))
+			if ((data != null) && (data.Length > 0))
 			{
 				Range range = GetRange(row, row, 0, LastColumnUsed);
 
@@ -841,7 +840,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 						{
 							object obj = array.GetValue(index + 1, index2 + 1);
 
-							if (null != obj)
+							if (obj != null)
 							{
 								string value = obj.ToString();
 
@@ -871,7 +870,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		{
 			row++;
 
-			if (true == hasHeaderRow)
+			if (hasHeaderRow == true)
 			{
 				row++;
 			}
