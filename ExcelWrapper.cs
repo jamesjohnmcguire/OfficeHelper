@@ -12,7 +12,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using Common.Logging;
+using global::Common.Logging;
 using Microsoft.Office.Interop.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
 using Range = Microsoft.Office.Interop.Excel.Range;
