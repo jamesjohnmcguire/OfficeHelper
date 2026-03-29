@@ -44,7 +44,7 @@ namespace DigitalZenWorks.Common.OfficeHelper
 		/// </summary>
 		public ExcelWrapper()
 		{
-			excelApplication = new ()
+			excelApplication = new()
 			{
 				DisplayAlerts = false
 			};
@@ -174,17 +174,17 @@ namespace DigitalZenWorks.Common.OfficeHelper
 			try
 			{
 				string connectionString = GetConnectionString(fileName);
-				excelTable = new ();
+				excelTable = new();
 				excelTable.Locale = CultureInfo.InvariantCulture;
 
-				using OleDbConnection connection = new (connectionString);
+				using OleDbConnection connection = new(connectionString);
 
 				string query = string.Format(
 					CultureInfo.InvariantCulture,
 					"SELECT * FROM [{0}$]",
 					sheetName);
 
-				using OleDbDataAdapter adaptor = new (query, connection);
+				using OleDbDataAdapter adaptor = new(query, connection);
 
 				adaptor.Fill(excelTable);
 			}
