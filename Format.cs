@@ -4,26 +4,25 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.Common.OfficeHelper
+namespace DigitalZenWorks.Common.OfficeHelper;
+
+/// <summary>
+/// The Format enum.
+/// </summary>
+public enum Format
 {
 	/// <summary>
-	/// The Format enum.
+	/// Date format.
 	/// </summary>
-	public enum Format
-	{
-		/// <summary>
-		/// Date format.
-		/// </summary>
-		Date,
+	Date,
 
-		/// <summary>
-		/// General format.
-		/// </summary>
-		General,
+	/// <summary>
+	/// General format.
+	/// </summary>
+	General,
 
-		/// <summary>
-		/// Text format.
-		/// </summary>
-		Text
-	}
+	/// <summary>
+	/// Text format.
+	/// </summary>
+	Text
 }
