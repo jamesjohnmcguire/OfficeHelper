@@ -809,6 +809,11 @@ public class ExcelWrapper
 		workSheet.Name = sheetName;
 	}
 
+	/// <summary>
+	/// Builds the OleDb connection string used to read an Excel workbook.
+	/// </summary>
+	/// <param name="fileName">The Excel workbook file name.</param>
+	/// <returns>The OleDb connection string.</returns>
 	private static string GetConnectionString(string fileName)
 	{
 		string connectionString =
@@ -818,6 +823,12 @@ public class ExcelWrapper
 		return connectionString;
 	}
 
+	/// <summary>
+	/// Converts the Excel range values array into a jagged string array.
+	/// </summary>
+	/// <param name="rangeValues">The range values returned by Excel.</param>
+	/// <returns>The converted string array, or null when the input is not a
+	/// multi-dimensional array.</returns>
 	private static string[][] GetStringArray(object rangeValues)
 	{
 		string[][] stringArray = null;
