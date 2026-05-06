@@ -1,0 +1,64 @@
+﻿root = true
+
+[*]
+charset = utf-8
+guidelines = 80
+guidelines_style = 2px solid lime
+indent_size = 4
+indent_style = tab
+insert_final_newline = true
+max_line_length = 80
+trim_trailing_whitespace = true
+
+[*.{cs,csproj,props}]
+end_of_line = lf
+
+[*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+
+dotnet_diagnostic.max_line_length.severity = warning
+
+# CA1812: Avoid uninstantiated internal classes
+dotnet_diagnostic.CA1812.severity = none
+
+# CA1819: Properties should not return arrays
+dotnet_diagnostic.CA1819.severity = none
+
+# CA1859: Use concrete types when possible for improved performance
+dotnet_diagnostic.CA1859.severity = none
+
+# IDE0017: Simplify object initialization
+dotnet_style_object_initializer = false
+
+# SA1000: The keyword 'new' should be followed by a space
+dotnet_diagnostic.SA1000.severity = none
+
+# SA1010: Opening square brackets should be spaced correctly
+dotnet_diagnostic.SA1010.severity = none
+
+# SA1101: Prefix Local Calls With This
+dotnet_diagnostic.SA1101.severity = none
+
+# SA1306: Field Names Must Begin With Lower Case Letter
+dotnet_diagnostic.SA1306.severity = warning
+
+# SA1311: Static Readonly Fields Must Begin With Upper Case Letter
+dotnet_diagnostic.SA1311.severity = warning
+
+# SA1312: Variable Names Must Begin With Lower Case Letter
+dotnet_diagnostic.SA1312.severity = warning
+
+# SA1412: Store files as UTF-8 with byte order mark
+dotnet_diagnostic.SA1412.severity = none
+
+# SA1516: Elements Must Be Separated By Blank Line
+dotnet_diagnostic.SA1516.severity = warning
+
+# Require space after 'new' keyword
+dotnet_diagnostic.SA1000.severity = warning
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+
+# SA1413: Use Trailing Commas In MultiLine Initializers
+dotnet_diagnostic.SA1413.severity = none
